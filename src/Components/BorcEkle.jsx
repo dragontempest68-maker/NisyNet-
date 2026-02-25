@@ -6,9 +6,9 @@ function BorcEkle() {
   const [miktar, setMiktar] = useState("");
   const [aciklama, setAciklama] = useState("");
 
-  const handlekaydet = async (e) => {
+  const handleKaydet = async (e) => {
     e.preventDefault();
-    
+
     if (!isim || !miktar) {
       alert("Lütfen isim ve miktar kısımlarını doldurun!");
       return;
@@ -16,54 +16,53 @@ function BorcEkle() {
 
     try {
       await db.borclar.add({
-        isim: isim,             // VİRGÜL EKLENDİ
-        miktar: Number(miktar), // VİRGÜL EKLENDİ
-        aciklama: aciklama,     // VİRGÜL EKLENDİ
-        tarih: new Date().toLocaleDateString()
+        isim: isim,
+        miktar: Number(miktar),
+        aciklama: aciklama,
+        tarih: new Date().toLocaleDateString('tr-TR')
       });
 
       setIsim("");
       setMiktar("");
       setAciklama("");
-      console.log("Başarıyla kaydedildi!");
-      
     } catch (error) {
       console.log("Kayıt hatası:", error);
-    } // BURADAKİ NOKTALI VİRGÜL GEREKSİZ AMA HATA VERMEZ
-  }; // FONKSİYON BURADA BİTMELİ
+    }
+  };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t">
-      <form onSubmit={handlekaydet}>
-        <input
-          type="text"
-          value={isim}
-          placeholder="Kimin borcu? (İsim)"
-          onChange={(e) => setIsim(e.target.value)}
-          className="w-full mb-2 p-2 border rounded"
-        />
-        <div className="flex gap-2 mb-2">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-2xl">
+      <form onSubmit={handleKaydet} className="max-w-md mx-auto">
+        {/* İsim, miktar ve buton aynı satırda, taşma durumunda buton alta iner */}
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <input
+            type="text"
+            value={isim}
+            placeholder="İsim"
+            onChange={(e) => setIsim(e.target.value)}
+            className="flex-1 p-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white/70 min-w-[120px]"
+          />
           <input
             type="number"
             value={miktar}
-            placeholder="Miktar" 
+            placeholder="Miktar"
             onChange={(e) => setMiktar(e.target.value)}
-            className="flex-1 p-2 border rounded"
+            className="w-28 p-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white/70"
           />
           <button
             type="submit"
-            className="bg-indigo-600 text-white px-4 py-2 rounded"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-colors shadow-md shadow-indigo-200 whitespace-nowrap"
           >
             EKLE
           </button>
         </div>
         <input
           type="text"
-          placeholder="Açıklama (Opsiyonel)"
+          placeholder="Açıklama (opsiyonel)"
           value={aciklama}
           onChange={(e) => setAciklama(e.target.value)}
-          className="w-full p-2 border rounded"
-        /> 
+          className="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white/70"
+        />
       </form>
     </div>
   );
